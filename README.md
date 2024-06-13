@@ -19,3 +19,10 @@ Open your browser in:
 username = admin <br />
 password = 123
 
+
+## New Feature in Future
+
+- [ ] Docker Compose
+- [ ] Change Thymeleaf to Angular 17
+- [ ] Bean Validation
+- [ ] PostgreSQL instead H2
