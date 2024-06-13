@@ -1,0 +1,43 @@
+
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Update</title>
+
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1>Product Management System</h1>
+    <hr>
+    <h2>Update Product</h2>
+
+    <form action="#" th:action="@{/screen/save}" th:object="${product}"
+          method="POST">
+
+        <!-- Add hidden form field to handle update -->
+        <input type="hidden" th:field="*{id}" />
+
+        <input type="text" th:field="*{name}" class="form-control mb-4 col-4">
+
+        <select th:field="*{category}">
+            <option disabled value="">Select Category</option>
+            <option th:each="cat : ${categories}"
+                    th:text="${cat.name}"
+                    th:value="${cat.id}">
+        </select>
+
+        </br></br></br>
+
+        <button type="submit" class="btn btn-success col-2"> Update Product</button>
+    </form>
+
+    <hr>
+
+    <a th:href = "@{/screen/inicio}"> Back to Product View List</a>
+</div>
+</body>
+</html>
