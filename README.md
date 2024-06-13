@@ -15,3 +15,5 @@ mvn spring-boot:run
 Open yor browser in:
 [http://localhost:8080/products/all](http://localhost:8080/products/all])
 
+To login , the user is admin and the password is admin
+
