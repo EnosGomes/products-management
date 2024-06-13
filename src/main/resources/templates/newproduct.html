@@ -17,7 +17,7 @@
     <h2>Save Product</h2>
 
 
-    <form action="#" th:action="@{/screen/save}" th:object="${product}"
+    <form action="#" th:action="@{/products/save}" th:object="${product}"
           method="POST">
         <div>
             <label>Name:</label>
@@ -54,7 +54,7 @@
 
     <hr>
 
-    <a th:href="@{/screen/inicio}"> Back to Product View List</a>
+    <a th:href="@{/products/all}"> Back to Product View List</a>
 </div>
 </body>
 </html>

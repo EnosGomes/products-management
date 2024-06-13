@@ -37,12 +37,12 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
                 .roles("ADMIN", "USER")
                 .build();
 
-        UserDetails user = User.withUsername("user")
-                .password(encoder.encode("123"))
-                .roles("USER")
-                .build();
+//        UserDetails user = User.withUsername("user")
+//                .password(encoder.encode("123"))
+//                .roles("USER")
+//                .build();
 
-        return new InMemoryUserDetailsManager(admin, user);
+        return new InMemoryUserDetailsManager(admin);
     }
 
     // Configuring HttpSecurity

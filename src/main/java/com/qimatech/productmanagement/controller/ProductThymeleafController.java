@@ -94,7 +94,7 @@ public class ProductThymeleafController {
     @PostMapping("/save")
     public String saveEmployee( @ModelAttribute("employee") @Valid Product product) {
         productService.save(product);
-        return "redirect:/screen/inicio";
+        return "redirect:/products/all";
     }
 
     @GetMapping("/showFormForUpdate/{id}")
@@ -109,7 +109,7 @@ public class ProductThymeleafController {
     @GetMapping("/deleteProduct/{id}")
     public String deleteThroughId(@PathVariable(value = "id") long id) {
         productService.deleteProductById(id);
-        return "redirect:/screen/inicio";
+        return "redirect:/products/all";
 
     }
 }
