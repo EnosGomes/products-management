@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -94,7 +95,7 @@ public class ProductThymeleafController {
     @PostMapping("/save")
     public String saveEmployee( @ModelAttribute("employee") @Valid Product product) {
         productService.save(product);
-        return "redirect:/products/all";
+        return "redirect:/products/productsPaginated";
     }
 
     @GetMapping("/showFormForUpdate/{id}")
@@ -109,7 +110,19 @@ public class ProductThymeleafController {
     @GetMapping("/deleteProduct/{id}")
     public String deleteThroughId(@PathVariable(value = "id") long id) {
         productService.deleteProductById(id);
-        return "redirect:/products/all";
+        return "redirect:/products/productsPaginated";
+    }
 
+
+    @GetMapping("/product/search")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity searchProduct (Pageable pageable) {
+        return ResponseEntity.ok(productService.readProducts(pageable));
+    }
+
+    @GetMapping("/product/search/filter")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity searchProductWithFilter (@RequestParam("filter") String filter, Pageable pageable) {
+        return ResponseEntity.ok(productService.filterProducts(filter, pageable));
     }
 }

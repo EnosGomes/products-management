@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,23 +15,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController("/screen/products")
+@Controller("/screen")
 public class ProductController {
 
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/front")
-    public String viewHomePage(Model model) {
-        model.addAttribute("index", productService.findAll());
-        return "index";
-    }
-
     @GetMapping("/all")
-    @PreAuthorize("hasAuthority('ROLE_USER')")
     public List<Product> fetchAllProducts() {
         return productService.findAll();
     }
+
 
     @GetMapping("/product/search")
     public ResponseEntity searchProduct (Pageable pageable) {

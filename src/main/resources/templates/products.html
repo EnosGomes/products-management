@@ -4,10 +4,10 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0" />
-    <title>BezKoder - Spring Boot Thymeleaf example</title>
+    <title>Product Management</title>
 
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css" th:href="@{/css/style.css}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
           integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
           crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -15,11 +15,72 @@
     <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
 </head>
 
+<style>
+    .navbar {
+        padding: 0 10px;
+    }
+
+    *.icon-dark {
+        color: grey;
+    }
+
+    .message {
+        position: absolute;
+        top: 40px;
+        right:5px;
+    }
+
+    .search {
+        position: relative;
+    }
+
+    .icon-deleted {
+        background-color: lawngreen;
+    }
+
+    .icon-active {
+        background-color: red;
+    }
+
+    .search input {
+        text-indent: 25px;
+        border: 2px solid #d6d4d4;
+    }
+
+    .search input:focus {
+        box-shadow: none;
+        border: 1px solid grey;
+    }
+
+    .search .fa-search {
+        position: absolute;
+        top: 12px;
+        left: 10px;
+    }
+
+    .search button {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        width: 80px;
+        background: grey;
+    }
+
+    .size-select {
+        width: 60px;
+        color: #495057;
+        vertical-align: middle;
+        padding: 6px 12px;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+    }
+</style>
+
 <body>
 
 
 <div class="container-fluid" style="max-width: 900px; margin: 0 auto;">
-    <h2 class="text-center">products</h2>
+    <h2 class="text-center">Products Management</h2>
 
     <div th:if="${message != null}" class="alert alert-success alert-dismissible fade show text-center message"
          role="alert">
@@ -30,7 +91,7 @@
     </div>
 
     <div class="my-3">
-        <form th:action="@{/products}" id="searchForm">
+        <form th:action="@{/products/productsPaginated}" id="searchForm">
             <div class="row d-flex">
                 <div class="col-md-6 mt-2">
                     <div class="search">
@@ -40,7 +101,7 @@
                         <button type="submit" class="btn btn-secondary">Search</button>
                     </div>
                 </div>
-                <div class="col-md-3 input-group mt-2">
+                <div class="col-md-3 input-group mt-2" style="flex-wrap: nowrap">
                     <div class="input-group-prepend">
                         <label class="input-group-text" for="pageSize">Items per page:</label>
                     </div>
@@ -50,20 +111,22 @@
                     </select>
                 </div>
                 <div class="col-md-1 mt-2">
-                    <button id="btnClear" class="btn btn-info">Clear</button>
+                    <button id="btnClear" class="btn btn-dark">Clear</button>
                 </div>
             </div>
         </form>
     </div>
-
+    <div>
+        <a th:href="@{/products/addnew}" class="btn btn-primary btn-lg mb-3" >Add Product</a>
+    </div>
     <div th:if="${products.size() > 0}">
         <table class="table table-hover table-responsive-xl">
             <thead class="thead-light">
             <tr>
                 <th th:replace="fragments/sorting :: sorting('id','Id')"></th>
                 <th th:replace="fragments/sorting :: sorting('name','Name')"></th>
-                <th th:replace="fragments/sorting :: sorting('description','Description')"></th>
-                <th>Published</th>
+                <th th:replace="fragments/sorting :: sorting('category.name','Category')"></th>
+                <th>Available</th>
                 <th>Actions</th>
             </tr>
             </thead>
@@ -71,18 +134,18 @@
             <tr th:each="product : ${products}">
                 <th scope="row">[[${product.id}]]</th>
                 <td>[[${product.name}]]</td>
-                <td>[[${product.description}]]</td>
+                <td>[[${product.category.name}]]</td>
                 <td>
-                    <a th:if="${product.available == true}" class="fa-regular fa-square-check"
-                       th:href="@{'/products/' + ${product.id} + '/published/false'}" title="Disable this product"></a>
-                    <a th:if="${product.available == false}" class="fa-regular fa-square icon-dark"
-                       th:href="@{'/products/' + ${product.id} + '/published/true'}" title="Enable this product"></a>
+                    <a th:if="${product.available == true}" class="fa-regular fa-square-check icon-deleted "
+                       ></a>
+                    <a th:if="${product.available == false}" class="fa-regular fa-square icon-dark icon-active"
+                       ></a>
                 </td>
                 <td>
-                    <a th:href="@{'/products/' + ${product.id}}" title="Edit this product"
+                    <a th:href="@{'/products/showFormForUpdate/' + ${product.id}}" title="Edit this product"
                        class="fa-regular fa-pen-to-square icon-dark"></a>
                     &nbsp;
-                    <a th:href="@{'/products/delete/' + ${product.id}}" th:productTitle="${product.name}" id="btnDelete"
+                    <a th:href="@{'/products/deleteProduct/' + ${product.id}}" th:productTitle="${product.name}" id="btnDelete"
                        title="Delete this product" class="fa-regular fa-trash-can icon-dark btn-delete"></a>
                 </td>
             </tr>
@@ -161,7 +224,7 @@
         $("#btnClear").on("click", function (e) {
             e.preventDefault();
             $("#keyword").text("");
-            window.location = "[[@{/products}]]";
+            window.location = "[[@{/products/productsPaginated}]]";
         });
     });
 

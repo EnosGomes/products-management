@@ -50,12 +50,11 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/auth/welcome").permitAll()
+                .requestMatchers("/webjars/**").permitAll()
                 .and()
                 .authorizeHttpRequests().requestMatchers("/products/**").authenticated()
                 .and()
-                .authorizeHttpRequests().requestMatchers("/auth/admin/**").authenticated()
-                .and().formLogin()
+                .formLogin()
                 .and().build();
     }
 

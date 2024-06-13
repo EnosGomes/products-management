@@ -24,17 +24,26 @@
         </div>
         <input type="text" th:field="*{name}" placeholder="Product Name"
                class="form-control mb-4 col-4">
+
+        <div>
+            <label>Description:</label>
+        </div>
         <input type="text" th:field="*{description}" placeholder="description"
                class="form-control mb-4 col-4">
 
+        <div>
+            <label>Price:</label>
+        </div>
         <input type="number" th:field="*{price}" placeholder="price"
                class="form-control mb-4 col-4">
 
 <!--        <input type="text" th:field="*{available}" placeholder="available"-->
 <!--               class="form-control mb-4 col-4">-->
-
+        <div>
+            <label>Available:</label>
+        </div>
         <select th:field="*{available}">
-            <option disabled value="">Select Category</option>
+            <option disabled value="">Select Availability</option>
             <option  value="0">False</option>
             <option  value="1">True</option>
         </select>
@@ -58,7 +67,7 @@
 
     <hr>
 
-    <a th:href="@{/products/all}"> Back to Product View List</a>
+    <a th:href="@{/products/productsPaginated}"> Back to Product View List</a>
 </div>
 </body>
 </html>
