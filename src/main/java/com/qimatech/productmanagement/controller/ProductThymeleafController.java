@@ -33,16 +33,17 @@ public class ProductThymeleafController {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    @GetMapping("/all")
-    @PreAuthorize("hasAuthority('ROLE_USER')")
-    public String viewHomePage(Model model) {
-        List<Product> produtos = productService.findAll();
-        System.out.println(produtos);
-        model.addAttribute("produtos", produtos );
-        return "index";
-    }
+//    @GetMapping("/all")
+//    @PreAuthorize("hasAuthority('ROLE_USER')")
+//    public String viewHomePage(Model model) {
+//        List<Product> produtos = productService.findAll();
+//        System.out.println(produtos);
+//        model.addAttribute("produtos", produtos );
+//        return "index";
+//    }
 
     @GetMapping("/productsPaginated")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String getAll(Model model, @RequestParam(required = false) String keyword,
                          @RequestParam(defaultValue = "1") int page,
                          @RequestParam(defaultValue = "6") int size,
@@ -84,6 +85,7 @@ public class ProductThymeleafController {
     }
 
     @GetMapping("/addnew")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String addNewProduct(Model model) {
         List<Category> categories = categoryRepository.findAll();
         Product product = new Product();
@@ -93,12 +95,14 @@ public class ProductThymeleafController {
     }
 
     @PostMapping("/save")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String saveEmployee( @ModelAttribute("employee") @Valid Product product) {
         productService.save(product);
         return "redirect:/products/productsPaginated";
     }
 
     @GetMapping("/showFormForUpdate/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String updateForm(@PathVariable(value = "id") long id, Model model) {
         List<Category> categories = categoryRepository.findAll();
         Optional<Product> product = Optional.ofNullable(productService.findById(id));
@@ -108,6 +112,7 @@ public class ProductThymeleafController {
     }
 
     @GetMapping("/deleteProduct/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String deleteThroughId(@PathVariable(value = "id") long id) {
         productService.deleteProductById(id);
         return "redirect:/products/productsPaginated";

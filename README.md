@@ -16,6 +16,6 @@ Open your browser in:
 [http://localhost:8080/products/productsPaginated](http://localhost:8080/products/all])
 
 ## Login <br />
-user = admin <br />
+username = admin <br />
 password = 123
 
